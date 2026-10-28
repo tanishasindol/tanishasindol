@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Secure Login System</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #e8f3ff, #c9e2ff);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 32px 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 35px rgba(30, 70, 120, 0.15);
+    }
+
+    .icon {
+      width: 65px;
+      height: 65px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 18px;
+      background: #e5f0ff;
+      color: #2563eb;
+      border-radius: 50%;
+      font-size: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 26px;
+      color: #17365d;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #334155;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px #dbeafe;
+    }
+
+    .password-box {
+      display: flex;
+      gap: 7px;
+    }
+
+    .password-box input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .toggle {
+      padding: 0 10px;
+      border: none;
+      border-radius: 9px;
+      background: #e5edff;
+      color: #1d4ed8;
+      cursor: pointer;
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .login-btn:hover {
+      background: #1d4ed8;
+    }
+
+    #message {
+      margin-top: 16px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .security-note {
+      margin-top: 22px;
+      padding: 12px;
+      background: #eff6ff;
+      border-radius: 10px;
+      color: #475569;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    @media (max-width: 350px) {
+      .container {
+        padding: 25px 17px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <div class="icon" aria-hidden="true">🔐</div>
+
+    <h1>Secure Login</h1>
+
+    <p class="subtitle">
+      Welcome back! Enter your details to continue.
+    </p>
+
+    <form id="loginForm">
+
+      <label for="email">Email Address</label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your email"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">Password</label>
+
+      <div class="password-box">
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+
+        <button
+          type="button"
+          class="toggle"
+          id="togglePassword"
+          aria-label="Show password"
+          aria-pressed="false"
+        >
+          Show
+        </button>
+      </div>
+
+      <button type="submit" class="login-btn">
+        Sign In
+      </button>
+
+      <div
+        id="message"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+    </form>
+
+    <div class="security-note">
+      <strong>Security Tips</strong><br>
+      • Use a unique, strong password.<br>
+      • Never share your password or OTP.<br>
+      • Avoid logging in on untrusted devices.
+    </div>
+
+    <div class="footer">
+      Cybersecurity Internship Project
+    </div>
+
+  </main>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const message = document.getElementById("message");
+    const toggle = document.getElementById("togglePassword");
+
+    toggle.addEventListener("click", function () {
+      const showing = password.type === "text";
+
+      password.type = showing ? "password" : "text";
+      toggle.textContent = showing ? "Show" : "Hide";
+
+      toggle.setAttribute("aria-label",
+        showing ? "Show password" : "Hide password");
+
+      toggle.setAttribute("aria-pressed", String(!showing));
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      message.style.display = "block";
+      message.style.background = "#fee2e2";
+      message.style.color = "#991b1b";
+
+      if (!email.validity.valid || !email.value.trim()) {
+        message.textContent =
+          "Please enter a valid email address.";
+        email.focus();
+        return;
+      }
+
+      if (!password.value) {
+        message.textContent = "Please enter your password.";
+        password.focus();
+        return;
+      }
+
+      message.style.background = "#fef3c7";
+      message.style.color = "#92400e";
+
+      message.textContent =
+        "This is a frontend demonstration. Authentication " +
+        "is not connected to a secure backend.";
+    });
+  </script>
+
+</body>
+</html>
